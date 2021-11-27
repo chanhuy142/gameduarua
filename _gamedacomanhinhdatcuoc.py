@@ -24,6 +24,7 @@ def win(x):
         draw_text('PURPLE WIN', font, (250, 0, 0), screen, 600, 300)
 #hambet
 def bet():
+    click2 = False
     global betvalue
     global money
     #Thuoc tinh Button
@@ -57,13 +58,13 @@ def bet():
         button_s = pygame.Rect(buttons_location[0],buttons_location[1],BUTTON_WIDTH,BUTTON_HEIGHT)
 
         if button_c.collidepoint((mx, my)):
-            if click: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
+            if click2: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
                 if(money>=50):
                     betvalue+=50
                     money-=50
 
         if button_s.collidepoint((mx, my)):
-            if click: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
+            if click2: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
                 game()
                 running=False
 
@@ -72,8 +73,8 @@ def bet():
         screen.blit(buttonc_image,buttonc_location)
         screen.blit(buttons_image,buttons_location)
 
- 
-        click = False
+        click2 = False
+        
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -84,7 +85,7 @@ def bet():
                     sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
+                    click2 = True
  
         pygame.display.update()
         mainClock.tick(60)
@@ -120,9 +121,10 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
  
-click = False
+
  #ham menu chinh
 def main_menu():
+    click1 = False
     #Thuoc tinh Button
     button2_image = pygame.image.load('button2.png')
     button2_location = [50,150]
@@ -135,8 +137,9 @@ def main_menu():
     button3_image = pygame.image.load('button1.png')
     button3_image=pygame.transform.scale(button1_image,(BUTTON_WIDTH,BUTTON_HEIGHT))
     button3_location = [50,250]  
-
-    while True:
+    running_menu=True
+    while running_menu:
+        
         #cap nhat lai kich thuoc khi chay lap
         button1_image=pygame.transform.scale(button1_image,(BUTTON_WIDTH,BUTTON_HEIGHT))
         button2_image=pygame.transform.scale(button2_image,(BUTTON_WIDTH,BUTTON_HEIGHT))   
@@ -154,18 +157,20 @@ def main_menu():
         button_2 = pygame.Rect(button2_location[0],button2_location[1],BUTTON_WIDTH,BUTTON_HEIGHT)
         button_3 = pygame.Rect(button3_location[0],button3_location[1],BUTTON_WIDTH,BUTTON_HEIGHT)
         
+        
         if button_1.collidepoint((mx, my)):
             button1_image=pygame.transform.scale(button1_image,(150,70))# dua con tro chuot se zoom bu ra
-            if click: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
+            if click1: #neu click=true va vi tri con chuot nam trong vung rect button 1 thi chay toi ham game
                 bet()
+                running_menu=False
         if button_2.collidepoint((mx, my)):
             button2_image=pygame.transform.scale(button2_image,(150,70))# dua con tro chuot se zoom bu ra
-            if click: #neu click=true va vi tri con chuot nam trong vung rect button 2 thi thoat game
+            if click1: #neu click=true va vi tri con chuot nam trong vung rect button 2 thi thoat game
                 pygame.quit()
                 sys.exit()
         if button_3.collidepoint((mx, my)):
             button3_image=pygame.transform.scale(button3_image,(150,70))# dua con tro chuot se zoom bu ra
-            if click: #neu click=true va vi tri con chuot nam trong vung rect button 2 thi thoat game
+            if click1: #neu click=true va vi tri con chuot nam trong vung rect button 2 thi thoat game
                 pygame.quit()
                 sys.exit()
         # draw button
@@ -173,7 +178,7 @@ def main_menu():
         screen.blit(button2_image,button2_location)
         screen.blit(button3_image,button3_location)
  
-        click = False
+        click1 = False
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -184,7 +189,7 @@ def main_menu():
                     sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
+                    click1 = True
  
         pygame.display.update()
         mainClock.tick(60)
@@ -316,6 +321,7 @@ def game():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
+                    main_menu()
             
         pygame.display.update()
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
